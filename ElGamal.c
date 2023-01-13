@@ -34,7 +34,7 @@ int main() {
 	printf("\n");
 	fclose(fp);
 	
-	//»ñÈ¡¹«Ô¿(p,g,y),Ë½Ô¿x
+	//è·å–å…¬é’¥(p,g,y),ç§é’¥x
 	getp(p);
 	getg(p, g);
 	getx(p, x);
@@ -49,7 +49,7 @@ int main() {
 	cotnum(y, stdout);
 	printf("\n\n");
 
-	//¼ÓÃÜ
+	//åŠ å¯†
 	encrypt(p, g, y, m, y1, y2);
 	printf("y1:");
 	cotnum(y1, stdout);
@@ -58,7 +58,7 @@ int main() {
 	cotnum(y2, stdout);
 	printf("\n\n");
 
-	//½âÃÜ
+	//è§£å¯†
 	decrypt(x, y1, y2, p, plaintext);
 	printf("plaintext:");
 	cotnum(plaintext, stdout);
@@ -78,21 +78,21 @@ int main() {
 void getp(big p) {
 	big q;
 	q = mirvar(0);
-	bigdig(150, 10, p);		//»ñÈ¡p
+	bigdig(150, 10, p);		//get p
 	copy(p, q);
 	decr(q, 1, q);
-	divide(q, mirvar(2), q);		//»ñÈ¡q = £¨p-1£©/2
-	if((!isprime(p)) && (!isprime(q))) {		//ÅĞ¶Ïp¡¢qÊÇ·ñÎªËØÊı
+	divide(q, mirvar(2), q);		//get q = ï¼ˆp-1ï¼‰/2
+	if((!isprime(p)) && (!isprime(q))) {		//Judge whether p and q are prime numbers
 		getp(p);
 	}
 	mirkill(q);
 }
 
-void getg(big p,big g) {		//»ñµÃpµÄ±¾Ô­¸ù
+void getg(big p,big g) {		//Get the primitive root of p
 	big tmp;
 	tmp = mirvar(0);
 
-	while (compare(tmp,mirvar(1)) != 0) {		//g^(p-1) mod p = 1  ²»Ì«È·¶¨ÕâÃ´Ëã¶Ô²»¶Ô,µ«×îºó½á¹ûÊÇÕıÈ·µÄ
+	while (compare(tmp,mirvar(1)) != 0) {		//g^(p-1) mod p = 1
 		copy(p, tmp);
 		decr(tmp, 1, tmp);
 		getp(g);
@@ -101,7 +101,7 @@ void getg(big p,big g) {		//»ñµÃpµÄ±¾Ô­¸ù
 	mirkill(tmp);
 }
 
-void getx(big p,big x) {   //²úÉú´óÓÚ1Ğ¡ÓÚpµÄËæ»úÊıx×÷ÎªË½Ô¿
+void getx(big p,big x) {   //Generate a random number x greater than 1 but less than p as the private key
 	while (compare(x, mirvar(1)) != 1) {
 		bigrand(p, x);
 	}
@@ -115,7 +115,7 @@ void encrypt(big p, big g, big y,big m,big y1,big y2) {
 	tmp = mirvar(0);
 	copy(p, tmp);
 	decr(tmp, 2, tmp);
-	while (compare(k, mirvar(1)) != 1 && tmp != 1) {		//²úÉú1<k<p-2,ÇÒ£¨k,p)=1
+	while (compare(k, mirvar(1)) != 1 && tmp != 1) {		//<k<p-2,ï¼ˆk,p)=1
 		bigrand(tmp, k);
 		decr(p, mirvar(1), tmp);
 		egcd(k, tmp,tmp);
@@ -134,7 +134,7 @@ void decrypt(big x, big y1, big y2, big p, big plaintext) {
 	tmp1 = mirvar(0);
 	tmp2 = mirvar(0);
 	copy(y1, tmp1);
-	xgcd(tmp1, p, tmp1, tmp1, tmp1);		//Çóy1Ä£pµÄÄæ	
+	xgcd(tmp1, p, tmp1, tmp1, tmp1);		//Find the inverse of y1 module p	
 	powmod(tmp1, x, p, tmp1);		//y1^(-x) mod p
 	multiply(tmp1, y2, tmp1);
 	powmod(tmp1, mirvar(1), p, plaintext);		//plaintext = y2y1^(-x) mod p
