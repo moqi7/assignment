@@ -1,4 +1,4 @@
-DATA segment;
+DATA segment
     DATA1 DW 1234H
     DATA2 DW 5678H
     SUM DW ?
@@ -13,7 +13,7 @@ START:MOV AX,DATA
       MOV DS,AX
       MOV AX,STACK
       MOV SS,AX;
-      MOV SP,OFFSET TOP;
+      MOV SP,OFFSET TOP
       MOV AX,DATA1
       ADD AX,DATA2
       MOV SUM,AX
